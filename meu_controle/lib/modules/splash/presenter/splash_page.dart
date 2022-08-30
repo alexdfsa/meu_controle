@@ -12,7 +12,7 @@ class SplashPage extends StatefulWidget {
 
 class SplashPageState extends State<SplashPage> with SplashMixin {
   @override
-  final minDuration = const Duration(seconds: 3);
+  final minDuration = const Duration(seconds: 5);
 
   @override
   void onFinishLoading(List responses) {
@@ -46,11 +46,13 @@ class SplashPageState extends State<SplashPage> with SplashMixin {
                   alignment: Alignment.bottomCenter,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 80, vertical: 45),
-                  child: BlendMask(
+                  child: const BlendMask(
                     opacity: 1.0,
                     blendMode: BlendMode.overlay,
-                    child:
-                        SizedBox(child: Image.asset('assets/splash/logo.png')),
+                    child: SizedBox(
+                      //child: Image.asset('assets/splash/logo.png'),
+                      child: Text('Ondeficará o logo'),
+                    ),
                   ),
                 ),
               ),

@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:meu_controle/core/domain/entities/entity.dart';
+import 'package:meu_controle/modules/core/domain/entities/generic_entity.dart';
 
-abstract class FirebaseDatasource<T extends Entity> extends Mapper<T> {
+abstract class FirebaseDatasource<T extends GenericEntity> extends Mapper<T> {
   late CollectionReference collection;
-  Datasource(String dsCollection) {
+  datasource(String dsCollection) {
     collection = FirebaseFirestore.instance.collection(dsCollection);
   }
 
-  Future<bool> salveOrUpdate(T model) async {
+  Future<bool> saveOrUpdate(model) async {
     collection.doc(model.uuid).set(toMap(model));
     return true;
   }

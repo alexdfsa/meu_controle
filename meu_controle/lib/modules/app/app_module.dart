@@ -1,6 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:meu_controle/core/home/presenter/pages/home_page.dart';
-import 'package:meu_controle/core/splash/splash_module.dart';
+import 'package:meu_controle/modules/core/presenter/pages/home_page.dart';
+import 'package:meu_controle/modules/splash/splash_module.dart';
 
 class AppModule extends Module {
   @override
