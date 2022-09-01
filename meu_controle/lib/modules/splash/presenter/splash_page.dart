@@ -16,7 +16,7 @@ class SplashPageState extends State<SplashPage> with SplashMixin {
 
   @override
   void onFinishLoading(List responses) {
-    Modular.to.navigate('/home');
+    Modular.to.navigate('/core/home');
   }
 
   @override

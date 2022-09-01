@@ -15,11 +15,11 @@ class HomePage extends StatelessWidget {
           children: [
             const Text('Home Page'),
             ElevatedButton(
-              onPressed: () => Modular.to.pushNamed('/bank'),
+              onPressed: () => Modular.to.pushNamed('/financial/bank'),
               child: const Text('Navigate to bank Page'),
             ),
             ElevatedButton(
-              onPressed: () => Modular.to.pushNamed('/account'),
+              onPressed: () => Modular.to.pushNamed('/financial/account'),
               child: const Text('Navigate to account Page'),
             ),
           ],

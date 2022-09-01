@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:meu_controle/firebase_options.dart';
 
 mixin SplashMixin<T extends StatefulWidget> on State<T> {
   ///Minimum show duration from splash screen
@@ -6,7 +8,11 @@ mixin SplashMixin<T extends StatefulWidget> on State<T> {
 
   ///Callback called after minimun duration and all futures loaded
   void onFinishLoading(List responses);
-  List<Future> get futures;
+  //List<Future> get futures;
+
+  var futures = <Future>[
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+  ];
 
   @override
   void initState() {

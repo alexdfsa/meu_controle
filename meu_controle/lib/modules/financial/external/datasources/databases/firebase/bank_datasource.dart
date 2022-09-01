@@ -5,4 +5,6 @@ import 'package:meu_controle/modules/financial/infra/interfaces/datasources/i_ba
 
 class BankDatasource extends FirebaseDatasource<Bank>
     with BankMapper
-    implements IBankDatasource {}
+    implements IBankDatasource {
+  BankDatasource() : super('bank');
+}
