@@ -12,19 +12,28 @@ class HomePage extends StatelessWidget {
       ),
       body: Center(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text('Home Page'),
-            ElevatedButton(
-              onPressed: () => Modular.to.pushNamed('/financial/bank'),
-              child: const Text('Navigate to bank Page'),
-            ),
-            ElevatedButton(
-              onPressed: () => Modular.to.pushNamed('/financial/account'),
-              child: const Text('Navigate to account Page'),
-            ),
+            button('Navigate to bank Page', '/financial/bank'),
+            button('Navigate to account Page', '/financial/account'),
+            button('Navigate to credit card Page', '/financial/creditcard'),
           ],
         ),
       ),
     );
   }
+}
+
+button(String title, String menu) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: ElevatedButton(
+      onPressed: () => Modular.to.pushNamed(menu),
+      style: ElevatedButton.styleFrom(
+        elevation: 5,
+      ),
+      child: Text(title),
+    ),
+  );
 }

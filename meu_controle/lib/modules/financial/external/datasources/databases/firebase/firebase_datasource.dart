@@ -40,7 +40,7 @@ abstract class FirebaseDatasource<T extends GenericEntity> extends Mapper<T> {
   Future<Stream<List<T>>> getStreamList() async {
     var result = collection.snapshots();
     return result.map(
-        (events) => events.docs.map((e) => fromMap(e.data() as Map)).toList());
+        (models) => models.docs.map((e) => fromMap(e.data() as Map)).toList());
   }
 }
 
