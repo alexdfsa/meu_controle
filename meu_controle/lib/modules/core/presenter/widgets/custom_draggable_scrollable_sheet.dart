@@ -2,10 +2,18 @@ import 'package:flutter/material.dart';
 
 class CustomDraggableScrollableSheet extends StatelessWidget {
   const CustomDraggableScrollableSheet(
-      {Key? key, required this.title, required this.children})
+      {Key? key,
+      required this.title,
+      required this.children,
+      required this.save,
+      required this.cancel,
+      required this.close})
       : super(key: key);
   final String title;
   final List<Widget> children;
+  final VoidCallback save;
+  final VoidCallback cancel;
+  final VoidCallback close;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +42,7 @@ class CustomDraggableScrollableSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     style: buttomStyle(),
-                    onPressed: () {},
+                    onPressed: save,
                     child: const Icon(Icons.save_alt),
                   ),
                 ),
@@ -42,7 +50,7 @@ class CustomDraggableScrollableSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     style: buttomStyle(),
-                    onPressed: () {},
+                    onPressed: cancel,
                     child: const Icon(Icons.settings_backup_restore_rounded),
                   ),
                 ),
@@ -50,7 +58,7 @@ class CustomDraggableScrollableSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     style: buttomStyle(),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: close,
                     child: const Icon(Icons.expand_more_outlined),
                   ),
                 ),

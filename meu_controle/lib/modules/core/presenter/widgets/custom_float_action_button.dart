@@ -7,12 +7,18 @@ class CustomFloatActionButton extends StatelessWidget {
       required this.title,
       required this.icon,
       required this.tooTip,
-      required this.children})
+      required this.children,
+      required this.save,
+      required this.cancel,
+      required this.close})
       : super(key: key);
   final String title;
   final Icon icon;
   final String tooTip;
   final List<Widget> children;
+  final VoidCallback save;
+  final VoidCallback cancel;
+  final VoidCallback close;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +29,7 @@ class CustomFloatActionButton extends StatelessWidget {
       highlightElevation: 50,
       hoverElevation: 50,
       onPressed: () {
-        ShowModal.show(context, title, children);
+        ShowModal.show(context, title, children, save, cancel, close);
       },
       tooltip: tooTip,
       child: icon,
