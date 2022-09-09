@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -17,21 +15,21 @@ class BlendMask extends SingleChildRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(context) {
-    return RenderBlendMask(blendMode, opacity);
+    return CustomBlendMask(blendMode, opacity);
   }
 
   @override
-  void updateRenderObject(BuildContext context, RenderBlendMask renderObject) {
+  void updateRenderObject(BuildContext context, CustomBlendMask renderObject) {
     renderObject.blendMode = blendMode;
     renderObject.opacity = opacity;
   }
 }
 
-class RenderBlendMask extends RenderProxyBox {
+class CustomBlendMask extends RenderProxyBox {
   BlendMode blendMode;
   double opacity;
 
-  RenderBlendMask(this.blendMode, this.opacity);
+  CustomBlendMask(this.blendMode, this.opacity);
 
   @override
   void paint(context, offset) {

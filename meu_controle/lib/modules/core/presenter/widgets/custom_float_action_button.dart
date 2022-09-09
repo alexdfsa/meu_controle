@@ -36,22 +36,3 @@ class CustomFloatActionButton extends StatelessWidget {
     );
   }
 }
-
-Widget buildFloatBackButton(BuildContext context) {
-  return FloatingActionButton(
-    onPressed: () => Navigator.pop(context),
-  );
-}
-
-Widget bottomAppBar() {
-  return BottomAppBar(
-    color: Colors.yellow,
-    child: Container(
-      height: 50,
-    ),
-  );
-}
-
-buttomStyle() {
-  return const ButtonStyle();
-}

@@ -1,12 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:meu_controle/modules/financial/domain/entities/bank.dart';
 
 class BankState {
   final Bank bank;
   final List<Bank> banks;
   final Stream<List<Bank>> stramBanks;
-  final codeInputController = TextEditingController();
-  final nameInputController = TextEditingController();
 
   BankState(
       {required this.bank, required this.banks, required this.stramBanks});

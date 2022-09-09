@@ -111,8 +111,8 @@ class _BankPageState extends State<BankPage> {
     debugPrint('Clicou em cancel. Before Objeto bank: ${store.state.bank}');
     store.changeSelected(store.state.bank);
     debugPrint('Clicou em cancel. After Objeto bank: ${store.state.bank}');
-    store.state.codeInputController.text = store.state.bank.code;
-    store.state.nameInputController.text = store.state.bank.name;
+    store.codeInputController.text = store.state.bank.code;
+    store.nameInputController.text = store.state.bank.name;
   }
 
   void close() {
@@ -123,21 +123,25 @@ class _BankPageState extends State<BankPage> {
   }
 
   listViewWidgets() {
-    store.state.codeInputController.text = store.state.bank.code;
-    store.state.nameInputController.text = store.state.bank.name;
+    store.codeInputController.text = store.state.bank.code;
+    store.nameInputController.text = store.state.bank.name;
     return [
       Form(
         key: store.formKey,
         child: Column(
           children: [
             CustomTextFormField(
-                label: 'Code',
-                controller: store.state.codeInputController,
-                validatorType: ValidatorType.mandatoryField),
+              label: 'Code',
+              controller: store.codeInputController,
+              validatorType: ValidatorType.mandatoryField,
+              textInputType: TextInputType.number,
+            ),
             CustomTextFormField(
-                label: 'Name',
-                controller: store.state.nameInputController,
-                validatorType: ValidatorType.mandatoryField),
+              label: 'Name',
+              controller: store.nameInputController,
+              validatorType: ValidatorType.mandatoryField,
+              textInputType: TextInputType.name,
+            ),
           ],
         ),
       ),

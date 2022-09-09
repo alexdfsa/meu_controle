@@ -13,6 +13,9 @@ class BankStore extends StreamStore<Failure, BankState> {
   //Form fields
   final formKey = GlobalKey<FormState>();
 
+  final codeInputController = TextEditingController();
+  final nameInputController = TextEditingController();
+
   Future<void> fetchList() async {
     debugPrint('fetchList');
     try {
@@ -52,11 +55,11 @@ class BankStore extends StreamStore<Failure, BankState> {
     try {
       setLoading(true);
       if (bank == null) {
-        state.codeInputController.clear();
-        state.nameInputController.clear();
+        codeInputController.clear();
+        nameInputController.clear();
       } else {
-        state.codeInputController.text == bank.code;
-        state.nameInputController.text == bank.name;
+        codeInputController.text = bank.code;
+        nameInputController.text = bank.name;
       }
       update(state.copyWith(bank: bank), force: true);
     } on Failure catch (ex) {

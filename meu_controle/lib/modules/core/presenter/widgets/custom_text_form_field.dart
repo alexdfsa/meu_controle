@@ -9,11 +9,13 @@ class CustomTextFormField extends StatelessWidget {
     required this.label,
     required this.controller,
     required this.validatorType,
+    required this.textInputType,
   }) : super(key: key);
 
   final String label;
   final TextEditingController controller;
   final ValidatorType validatorType;
+  final TextInputType textInputType;
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +24,14 @@ class CustomTextFormField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         validator: ((value) => validate(validatorType, controller.text)),
-        onChanged: (value) => controller.text = value,
+        onChanged: (value) {
+          controller.text = value;
+          controller.selection = TextSelection.fromPosition(
+              TextPosition(offset: controller.text.length));
+        },
         decoration: getInputDecotation(label),
-        keyboardType: TextInputType.number,
+        keyboardType: textInputType,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:meu_controle/modules/core/presenter/widgets/blend_mask.dart';
+import 'package:meu_controle/modules/core/presenter/widgets/custom_blend_mask.dart';
 import 'splash_mixin.dart';
 
 class SplashPage extends StatefulWidget {
