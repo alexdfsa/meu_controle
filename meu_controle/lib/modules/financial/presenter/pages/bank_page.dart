@@ -140,7 +140,7 @@ class _BankPageState extends State<BankPage> {
               label: 'Name',
               controller: store.nameInputController,
               validatorType: ValidatorType.mandatoryField,
-              textInputType: TextInputType.name,
+              textInputType: TextInputType.text,
             ),
           ],
         ),

@@ -31,7 +31,7 @@ class CustomTextFormField extends StatelessWidget {
         },
         decoration: getInputDecotation(label),
         keyboardType: textInputType,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        inputFormatters: getInputFormatters(textInputType),
       ),
     );
   }
@@ -58,5 +58,16 @@ class CustomTextFormField extends StatelessWidget {
       default:
     }
     return null;
+  }
+
+  List<TextInputFormatter>? getInputFormatters(TextInputType textInputType) {
+    List<TextInputFormatter>? formatters = [];
+    if (textInputType == TextInputType.number) {
+      formatters.add(FilteringTextInputFormatter.digitsOnly);
+    }
+    if (formatters == []) {
+      formatters = null;
+    }
+    return formatters;
   }
 }
