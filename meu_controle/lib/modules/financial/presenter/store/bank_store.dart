@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:meu_controle/modules/app/utils/failure.dart';
+import 'package:meu_controle/modules/app/utils/string_utils.dart';
 import 'package:meu_controle/modules/financial/domain/entities/bank.dart';
 import 'package:meu_controle/modules/financial/domain/usecases/bank_uc.dart';
 import 'package:meu_controle/modules/financial/presenter/states/bank_state.dart';
@@ -16,32 +17,6 @@ class BankStore extends StreamStore<Failure, BankState> {
   final codeInputController = TextEditingController();
   final nameInputController = TextEditingController();
 
-  Future<void> fetchList() async {
-    debugPrint('fetchList');
-    try {
-      setLoading(true);
-      final banks = await _uc.getAll() as List<Bank>;
-      update(state.copyWith(banks: banks));
-    } on Failure catch (ex) {
-      setError(ex);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  Future<void> fetchStream() async {
-    debugPrint('fetchStream');
-    try {
-      setLoading(true);
-      final stramBanks = await _uc.getStreamList() as Stream<List<Bank>>;
-      update(state.copyWith(stramBanks: stramBanks));
-    } on Failure catch (ex) {
-      setError(ex);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   String? validateField(String? value) {
     debugPrint('validateField');
     if (value != null && value.isEmpty) {
@@ -50,18 +25,37 @@ class BankStore extends StreamStore<Failure, BankState> {
     return null;
   }
 
-  changeSelected(Bank? bank) {
-    debugPrint('changeSelected');
+  updateControllers(Bank model) {
+    codeInputController.text = model.code;
+    nameInputController.text = model.name;
+  }
+
+  updateModel() {
     try {
       setLoading(true);
-      if (bank == null) {
-        codeInputController.clear();
-        nameInputController.clear();
-      } else {
-        codeInputController.text = bank.code;
-        nameInputController.text = bank.name;
+      Bank model = Bank(
+        code: codeInputController.text,
+        name: nameInputController.text,
+      );
+      update(state.copyWith(bank: model), force: true);
+    } on Failure catch (ex) {
+      setError(ex);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  saveOrUpdate() {
+    try {
+      setLoading(true);
+      updateModel();
+      Bank model = state.bank;
+      if (model.uuid.isEmpty) {
+        //TODO: remover o == para parar de dar erro na criação de novos registros;
+        model.uuid == StringUtils.generateUUID();
       }
-      update(state.copyWith(bank: bank), force: true);
+      _uc.saveOrUpdate(model);
+      update(state.copyWith(bank: model), force: true);
     } on Failure catch (ex) {
       setError(ex);
     } finally {

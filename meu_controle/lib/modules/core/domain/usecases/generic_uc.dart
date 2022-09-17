@@ -21,7 +21,7 @@ abstract class GenericUC<T extends Object> implements GenericRepository {
 
   @override
   Future<bool> saveOrUpdate(model) {
-    return repository.saveOrUpdate(model: model);
+    return repository.saveOrUpdate(model);
   }
 
   @override

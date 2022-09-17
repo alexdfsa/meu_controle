@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            button('Navigate to bank Page', '/financial/bank'),
+            button('Navigate to bank Page', '/financial/banklist'),
             button('Navigate to account Page', '/financial/account'),
             button('Navigate to credit card Page', '/financial/creditcard'),
           ],

@@ -4,13 +4,15 @@ import 'package:flutter_triple/flutter_triple.dart';
 import 'package:meu_controle/modules/app/utils/failure.dart';
 import 'package:meu_controle/modules/core/presenter/widgets/custom_bottom_navigation_bar.dart';
 import 'package:meu_controle/modules/core/presenter/widgets/custom_float_action_button.dart';
-import 'package:meu_controle/modules/core/presenter/widgets/custom_show_modal.dart';
 import 'package:meu_controle/modules/core/presenter/widgets/custom_text_form_field.dart';
+import 'package:meu_controle/modules/financial/domain/entities/bank.dart';
 import 'package:meu_controle/modules/financial/presenter/states/bank_state.dart';
 import 'package:meu_controle/modules/financial/presenter/store/bank_store.dart';
 
 class BankPage extends StatefulWidget {
-  const BankPage({Key? key}) : super(key: key);
+  const BankPage({super.key, required this.model});
+
+  final Bank model;
 
   @override
   State<BankPage> createState() => _BankPageState();
@@ -18,29 +20,48 @@ class BankPage extends StatefulWidget {
 
 class _BankPageState extends State<BankPage> {
   final BankStore store = Modular.get();
-
   @override
   void initState() {
     super.initState();
-    store.fetchList();
-    //store.fetchStream();
+
+    store.updateControllers(widget.model);
   }
 
   @override
   Widget build(BuildContext context) {
+    return scopedBuilder();
+  }
+
+  Scaffold page() {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bank'),
       ),
-      body: scopedBuilder(),
+      body: SingleChildScrollView(
+        child: Form(
+          key: store.formKey,
+          child: Column(
+            children: [
+              CustomTextFormField(
+                label: 'Code',
+                controller: store.codeInputController,
+                validatorType: ValidatorType.mandatoryField,
+                textInputType: TextInputType.number,
+              ),
+              CustomTextFormField(
+                label: 'Name',
+                controller: store.nameInputController,
+                validatorType: ValidatorType.mandatoryField,
+                textInputType: TextInputType.text,
+              ),
+            ],
+          ),
+        ),
+      ),
       floatingActionButton: CustomFloatActionButton(
-        title: 'Criar nova banco',
         icon: const Icon(Icons.add),
         tooTip: 'Criar nova banco',
-        children: listViewWidgets(),
-        save: save,
-        cancel: cancel,
-        close: close,
+        onPressed: save,
       ),
       bottomNavigationBar: const CustomBottomNavigationBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -68,48 +89,21 @@ class _BankPageState extends State<BankPage> {
         );
       },
       onState: (context, BankState state) {
-        return SingleChildScrollView(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: state.banks.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Card(
-                child: ListTile(
-                  title: Text(state.banks[index].name),
-                  onTap: () {
-                    debugPrint('Page onState onTap');
-                    debugPrint(
-                        'Clicou em index. Before Objeto bank: ${store.state.bank}');
-                    store.changeSelected(state.banks[index]);
-                    debugPrint(
-                        'Clicou em index. Afeter Objeto bank: ${store.state.bank}');
-                    ShowModal.show(context, 'Alterar banco', listViewWidgets(),
-                        save, cancel, close);
-                  },
-                  contentPadding: const EdgeInsets.all(8),
-                ),
-              );
-            },
-          ),
-        );
+        return page();
       },
     );
   }
 
   void save() {
     if (store.formKey.currentState!.validate()) {
-      debugPrint(
-          'Clicou em salvar. Before change - Objeto bank: ${store.state.bank}');
-      store.changeSelected(null);
-      debugPrint(
-          'Clicou em salvar. Afeter change - Objeto bank: ${store.state.bank}');
-      Navigator.pop(context);
+      debugPrint('beforeSave');
+      store.saveOrUpdate();
+      debugPrint('afterSve');
     }
   }
 
   void cancel() {
     debugPrint('Clicou em cancel. Before Objeto bank: ${store.state.bank}');
-    store.changeSelected(store.state.bank);
     debugPrint('Clicou em cancel. After Objeto bank: ${store.state.bank}');
     store.codeInputController.text = store.state.bank.code;
     store.nameInputController.text = store.state.bank.name;
@@ -117,34 +111,7 @@ class _BankPageState extends State<BankPage> {
 
   void close() {
     debugPrint('Clicou em close. Before Objeto bank: ${store.state.bank}');
-    store.changeSelected(null);
     debugPrint('Clicou em close. After Objeto bank: ${store.state.bank}');
     Navigator.pop(context);
-  }
-
-  listViewWidgets() {
-    store.codeInputController.text = store.state.bank.code;
-    store.nameInputController.text = store.state.bank.name;
-    return [
-      Form(
-        key: store.formKey,
-        child: Column(
-          children: [
-            CustomTextFormField(
-              label: 'Code',
-              controller: store.codeInputController,
-              validatorType: ValidatorType.mandatoryField,
-              textInputType: TextInputType.number,
-            ),
-            CustomTextFormField(
-              label: 'Name',
-              controller: store.nameInputController,
-              validatorType: ValidatorType.mandatoryField,
-              textInputType: TextInputType.text,
-            ),
-          ],
-        ),
-      ),
-    ];
   }
 }

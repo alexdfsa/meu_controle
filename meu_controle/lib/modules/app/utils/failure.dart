@@ -16,20 +16,22 @@ enum ExceptionType {
   pageException,
   stateException,
   storeException,
-  widgetException
+  widgetException,
 
-  //
-
+  //Unknown Exception
+  unknownException
 }
 
 abstract class Failure implements Exception {
   final String errorMessage;
+  final ExceptionType exceptionType;
 
   Failure(
       {StackTrace? stackTrace,
       String? label,
       dynamic exception,
-      required this.errorMessage}) {
+      required this.errorMessage,
+      required this.exceptionType}) {
     if (stackTrace != null) {
       debugPrintStack(label: label, stackTrace: stackTrace);
     }
@@ -47,6 +49,7 @@ class UnknownError extends Failure {
       : super(
             stackTrace: stackTrace,
             label: label,
+            exceptionType: ExceptionType.unknownException,
             exception: exception,
             errorMessage: 'Unknown Error');
 }
@@ -77,6 +80,7 @@ class EntityException extends Failure {
             stackTrace: stackTrace,
             label: label,
             exception: exception,
+            exceptionType: ExceptionType.entityException,
             errorMessage: errorMessage);
 }
 
@@ -86,6 +90,7 @@ class UseCaseException extends Failure {
       : super(
             stackTrace: stackTrace,
             label: label,
+            exceptionType: ExceptionType.useCaseException,
             exception: exception,
             errorMessage: errorMessage);
 }
@@ -96,6 +101,7 @@ class RepositoryException extends Failure {
       : super(
             stackTrace: stackTrace,
             label: label,
+            exceptionType: ExceptionType.repositoryException,
             exception: exception,
             errorMessage: errorMessage);
 }
@@ -106,6 +112,7 @@ class DatasourceException extends Failure {
       : super(
             stackTrace: stackTrace,
             label: label,
+            exceptionType: ExceptionType.datasourceException,
             exception: exception,
             errorMessage: errorMessage);
 }
@@ -116,6 +123,7 @@ class DriverException extends Failure {
       : super(
             stackTrace: stackTrace,
             label: label,
+            exceptionType: ExceptionType.driverException,
             exception: exception,
             errorMessage: errorMessage);
 }
@@ -126,6 +134,7 @@ class PageException extends Failure {
       : super(
             stackTrace: stackTrace,
             label: label,
+            exceptionType: ExceptionType.pageException,
             exception: exception,
             errorMessage: errorMessage);
 }
@@ -136,6 +145,7 @@ class StateException extends Failure {
       : super(
             stackTrace: stackTrace,
             label: label,
+            exceptionType: ExceptionType.stateException,
             exception: exception,
             errorMessage: errorMessage);
 }
@@ -146,6 +156,7 @@ class StoreException extends Failure {
       : super(
             stackTrace: stackTrace,
             label: label,
+            exceptionType: ExceptionType.storeException,
             exception: exception,
             errorMessage: errorMessage);
 }
@@ -156,6 +167,7 @@ class WidgetException extends Failure {
       : super(
             stackTrace: stackTrace,
             label: label,
+            exceptionType: ExceptionType.widgetException,
             exception: exception,
             errorMessage: errorMessage);
 }
