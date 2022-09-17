@@ -9,7 +9,12 @@ abstract class FirebaseDatasource<T extends GenericEntity> extends Mapper<T> {
   }
 
   Future<bool> saveOrUpdate(model) async {
-    collection.doc(model.uuid).set(toMap(model));
+    if (model.uuid == null || model.uuid == '') {
+      return Future.error(DatasourceException(null, null,
+          'FirebaseDatasource-saveOrUpdate', 'UUID must be non-empty.'));
+    } else {
+      collection.doc(model.uuid).set(toMap(model));
+    }
     return true;
   }
 
