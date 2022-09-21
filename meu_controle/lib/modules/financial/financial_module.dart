@@ -1,6 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_controle/modules/financial/domain/usecases/bank_uc.dart';
-import 'package:meu_controle/modules/financial/external/datasources/databases/firebase/bank_datasource.dart';
+import 'package:meu_controle/modules/financial/external/datasources/databases/firebase/bank_firestore_datasource.dart';
+import 'package:meu_controle/modules/financial/external/datasources/databases/hasura/bank_hasura_datasource.dart';
 import 'package:meu_controle/modules/financial/infra/repositories/bank_repository.dart';
 import 'package:meu_controle/modules/financial/presenter/pages/account_page.dart';
 import 'package:meu_controle/modules/financial/presenter/pages/bank_page.dart';
@@ -20,7 +21,8 @@ class FinancialModule extends Module {
         Bind.lazySingleton((i) => BankStore(i())),
         Bind.lazySingleton((i) => BankListStore(i())),
         Bind.lazySingleton((i) => BankRepository(i())),
-        Bind.lazySingleton((i) => BankDatasource()),
+        Bind.lazySingleton((i) => BankFirestoreDatasource()),
+        Bind.lazySingleton((i) => BankHasuraDatasource()),
       ];
 
   @override
@@ -28,7 +30,7 @@ class FinancialModule extends Module {
         ChildRoute('/banklist', child: (context, args) => const BankListPage()),
         ChildRoute('/bank',
             child: (context, args) => BankPage(
-                  model: args.data,
+                  args: args.data,
                 )),
         ChildRoute('/account', child: (context, args) => const AccountPage()),
       ];

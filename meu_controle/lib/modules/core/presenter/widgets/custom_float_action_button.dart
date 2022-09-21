@@ -9,7 +9,7 @@ class CustomFloatActionButton extends StatelessWidget {
   }) : super(key: key);
   final Icon icon;
   final String tooTip;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {

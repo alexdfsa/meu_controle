@@ -44,6 +44,8 @@ dependencies:
   cloud_firestore: ^3.4.6
   mocktail: ^0.3.0
   uuid: ^3.0.6
+  awesome_snackbar_content: ^0.0.8
+  hasura_connect: ^4.0.0+4
 
 dev_dependencies:
   flutter_test:

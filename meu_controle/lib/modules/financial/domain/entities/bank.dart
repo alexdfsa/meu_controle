@@ -1,16 +1,22 @@
-import 'package:equatable/equatable.dart';
 import 'package:meu_controle/modules/core/domain/entities/generic_entity.dart';
 
-class Bank extends Equatable with GenericEntity {
-  const Bank({
-    this.uuid = '',
-    this.code = '',
-    this.name = '',
+class Bank extends GenericEntity {
+  Bank({
+    required super.uuid,
+    required super.tenant,
+    required super.created,
+    required super.createdBy,
+    required super.updated,
+    required super.updatedBy,
+    required super.isActive,
+    required this.code,
+    required this.name,
   });
-  final String uuid;
-  final String code;
-  final String name;
+  String code;
+  String name;
+
+  Bank.n({this.code = '', this.name = ''}) : super.n();
 
   @override
-  List<Object?> get props => [uuid, code, name];
+  List<Object?> get props => [uuid];
 }

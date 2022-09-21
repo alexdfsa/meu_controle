@@ -21,7 +21,7 @@ void main() {
       () async {
     //Arrange
     final response = <Bank>[
-      const Bank(uuid: '13301', code: "237", name: "Bradesco"),
+      Bank.n(),
     ];
 
     when(() => bankUCTest.getAll()).thenAnswer(

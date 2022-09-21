@@ -3,8 +3,8 @@ import 'package:meu_controle/modules/financial/external/datasources/databases/fi
 import 'package:meu_controle/modules/financial/external/datasources/databases/firebase/mappers/bank_mapper.dart';
 import 'package:meu_controle/modules/financial/infra/interfaces/datasources/i_bank_datasource.dart';
 
-class BankDatasource extends FirebaseDatasource<Bank>
+class BankFirestoreDatasource extends FirebaseDatasource<Bank>
     with BankMapper
     implements IBankDatasource {
-  BankDatasource() : super('bank');
+  BankFirestoreDatasource() : super('bank');
 }

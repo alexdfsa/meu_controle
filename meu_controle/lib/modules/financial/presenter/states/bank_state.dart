@@ -5,7 +5,7 @@ class BankState {
 
   BankState({required this.bank});
 
-  BankState.initial() : bank = const Bank();
+  BankState.initial() : bank = Bank.n();
 
   BankState copyWith({
     required Bank bank,

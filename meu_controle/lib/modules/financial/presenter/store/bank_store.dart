@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:meu_controle/modules/app/utils/failure.dart';
-import 'package:meu_controle/modules/app/utils/string_utils.dart';
 import 'package:meu_controle/modules/financial/domain/entities/bank.dart';
 import 'package:meu_controle/modules/financial/domain/usecases/bank_uc.dart';
 import 'package:meu_controle/modules/financial/presenter/states/bank_state.dart';
@@ -30,13 +29,28 @@ class BankStore extends StreamStore<Failure, BankState> {
     nameInputController.text = model.name;
   }
 
-  updateModel() {
+  fetchModel(Bank model) {
+    try {
+      update(state.copyWith(bank: model), force: true);
+      updateControllers(state.bank);
+    } on Failure catch (ex) {
+      setError(ex);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  updatedModel(Bank model) {
+    model.code = codeInputController.text;
+    model.name = nameInputController.text;
+    return model;
+  }
+
+  saveOrUpdate() async {
     try {
       setLoading(true);
-      Bank model = Bank(
-        code: codeInputController.text,
-        name: nameInputController.text,
-      );
+      Bank model = updatedModel(state.bank);
+      await _uc.saveOrUpdate(model);
       update(state.copyWith(bank: model), force: true);
     } on Failure catch (ex) {
       setError(ex);
@@ -45,16 +59,10 @@ class BankStore extends StreamStore<Failure, BankState> {
     }
   }
 
-  saveOrUpdate() {
+  Future<void> delete(BuildContext context, Bank model) async {
     try {
       setLoading(true);
-      updateModel();
-      Bank model = state.bank;
-      if (model.uuid.isEmpty) {
-        //TODO: remover o == para parar de dar erro na criação de novos registros;
-        model.uuid == StringUtils.generateUUID();
-      }
-      _uc.saveOrUpdate(model);
+      _uc.delete(model.uuid);
       update(state.copyWith(bank: model), force: true);
     } on Failure catch (ex) {
       setError(ex);
