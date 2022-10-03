@@ -19,13 +19,23 @@ class BankListPage extends StatefulWidget {
   State<BankListPage> createState() => _BankListPageState();
 }
 
-class _BankListPageState extends State<BankListPage> {
+class _BankListPageState extends State<BankListPage>
+    with TickerProviderStateMixin {
   final BankListStore store = Modular.get();
+  late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
     store.fetchList();
+    /*
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 100),
+        vsync: this,
+        value: 0,
+        lowerBound: 0,
+        upperBound: 1);
+        */
   }
 
   @override
@@ -57,9 +67,18 @@ class _BankListPageState extends State<BankListPage> {
   scopedBuilder() {
     return ScopedBuilder<BankListStore, Failure, BankListState>.transition(
       store: store,
+      /*
+      transition: (_, child) {
+        return FadeTransition(
+          opacity: CurvedAnimation(parent: _controller, curve: Curves.bounceIn),
+          // duration: const Duration(milliseconds: 0),
+          child: child,
+        );
+      },
+      */
       transition: (_, child) {
         return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 400),
+          duration: const Duration(milliseconds: 0),
           child: child,
         );
       },
@@ -75,6 +94,7 @@ class _BankListPageState extends State<BankListPage> {
         );
       },
       onState: (context, BankListState state) {
+        //_controller.forward();
         return SafeArea(
           child: ListView.builder(
             shrinkWrap: true,
@@ -94,17 +114,27 @@ class _BankListPageState extends State<BankListPage> {
                         icon: const Icon(Icons.archive),
                         onPressed: () {},
                       ),
-                      //Colocar este icon dentro de um escoped
                       IconButton(
                         icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          store.delete(context, state.banks[index]);
-                          CustomSnackbar(store.unDelete(),
-                                  context: context,
-                                  type: ContentType.warning,
-                                  title: 'Delete',
-                                  message: 'This record has been deleted.')
-                              .show();
+                        onPressed: () async {
+                          bool deleted =
+                              await store.delete(context, state.banks[index]);
+                          if (deleted) {
+                            CustomSnackbar(store.unDelete(),
+                                    context: context,
+                                    type: ContentType.warning,
+                                    title: 'Delete',
+                                    message: 'This record has been deleted.')
+                                .show();
+                          } else {
+                            CustomSnackbar(null,
+                                    context: context,
+                                    type: ContentType.failure,
+                                    title: 'Delete',
+                                    message:
+                                        'The error occurred while trying to delete this record.')
+                                .show();
+                          }
                         },
                       ),
                     ],

@@ -27,7 +27,7 @@ class CustomSnackbar {
       ),
       action: snackBarAction(),
     );
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    //ScaffoldMessenger.of(context).hideCurrentSnackBar();
     GlobalScaffold.instance.showSnackbar(snackBar);
   }
 

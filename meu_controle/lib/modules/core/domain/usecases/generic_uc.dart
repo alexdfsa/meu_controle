@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_controle/modules/app/utils/app.dart';
 import 'package:meu_controle/modules/core/domain/interfaces/repositories/generic_repository.dart';
@@ -23,7 +24,7 @@ abstract class GenericUC<T extends Object> implements GenericRepository {
   @override
   Future<bool> saveOrUpdate(model) {
     model.updatedBy = App.currentUser();
-    model.updated = DateTime.now();
+    model.updated = Timestamp.fromDate(DateTime.now());
     return repository.saveOrUpdate(model);
   }
 

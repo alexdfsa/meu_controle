@@ -128,7 +128,7 @@ class _BankPageState extends State<BankPage> {
       store: store,
       transition: (_, child) {
         return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 400),
+          duration: const Duration(milliseconds: 0),
           child: child,
         );
       },

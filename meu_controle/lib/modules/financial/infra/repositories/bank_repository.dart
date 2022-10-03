@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:meu_controle/modules/financial/domain/interfaces/repositories/i_bank_repository.dart';
 import 'package:meu_controle/modules/financial/external/datasources/databases/hasura/bank_hasura_datasource.dart';
 
@@ -20,7 +19,7 @@ class BankRepository implements IBankRepository {
 
   @override
   Future<List> getAll() {
-    debugPrint('datasource: $_datasource');
+    //debugPrint('datasource: $_datasource');
     return _datasource.getAll();
   }
 
