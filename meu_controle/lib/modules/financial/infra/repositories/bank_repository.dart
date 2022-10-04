@@ -29,7 +29,7 @@ class BankRepository implements IBankRepository {
   }
 
   @override
-  Future<bool> saveOrUpdate(model) {
+  Future saveOrUpdate(model) {
     return _datasource.saveOrUpdate(model);
   }
 }

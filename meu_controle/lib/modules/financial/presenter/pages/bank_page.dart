@@ -159,8 +159,8 @@ class _BankPageState extends State<BankPage> {
         return CustomFloatActionButton(
           icon: const Icon(Icons.add),
           tooTip: 'Criar nova banco',
-          onPressed: () {
-            store.saveOrUpdate();
+          onPressed: () async {
+            await store.saveOrUpdate();
             CustomSnackbar(null,
                     context: context,
                     type: ContentType.success,

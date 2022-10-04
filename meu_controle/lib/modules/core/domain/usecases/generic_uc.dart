@@ -22,7 +22,7 @@ abstract class GenericUC<T extends Object> implements GenericRepository {
   }
 
   @override
-  Future<bool> saveOrUpdate(model) {
+  Future saveOrUpdate(model) {
     model.updatedBy = App.currentUser();
     model.updated = Timestamp.fromDate(DateTime.now());
     return repository.saveOrUpdate(model);

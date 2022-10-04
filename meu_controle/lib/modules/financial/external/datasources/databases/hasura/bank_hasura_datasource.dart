@@ -33,9 +33,7 @@ class BankHasuraDatasource extends HasuraDatasource<Bank>
     try {
       var affectedRows = await runMutation(deleteSQL(uuid));
       debugPrint('deletado: $deleted');
-      if (affectedRows == -1) {
-        return false;
-      }
+      return true;
     } on Exception catch (ex, stack) {
       debugPrint('delete--------:$ex');
       Future.error(DatasourceException(
@@ -59,15 +57,20 @@ class BankHasuraDatasource extends HasuraDatasource<Bank>
   }
 
   @override
-  Future<bool> saveOrUpdate(model) async {
+  Future saveOrUpdate(model) async {
     bool saved = false;
-    Map<String, dynamic> variables = toMap(model);
+    Bank bank = model;
+    String sql = bank.uuid.isEmpty ? insertSQL(bank) : updateSQL(bank);
     try {
-      var affectedRows = await runMutation(insertSQL(model));
-      debugPrint('salvo: ========');
-      if (affectedRows == -1) {
-        return false;
+      var result = await runMutation(sql);
+      if (bank.uuid.isEmpty) {
+        bank.uuid = result["data"]["insert_bank"]["returning"][0]["uuid"];
       }
+      debugPrint('salvo: ========');
+      //if (affectedRows == -1) {
+      //  return false;
+      //}
+      return bank;
     } on Exception catch (ex, stack) {
       debugPrint(ex.toString());
       Future.error(DatasourceException(
@@ -105,7 +108,10 @@ mutation delete {
 
 String insertSQL(Bank model) => '''
 mutation InsertBank {
-  insert_bank(objects: {code: "${model.code}", created: "${model.created.toDate()}", createdBy: "${model.createdBy}", isActive: "${model.isActive}", name: "${model.name}", tenant: "${model.tenant}", updated: "${model.updated.toDate()}", updatedBy: "${model.updatedBy}", uuid: "${model.uuid}"}) {
+  insert_bank(objects: {code: "${model.code}", created: "${model.created.toDate()}", createdBy: "${model.createdBy}", isActive: "${model.isActive}", name: "${model.name}", tenant: "${model.tenant}", updated: "${model.updated.toDate()}", updatedBy: "${model.updatedBy}"}) {
+    returning {
+      uuid
+    }
     affected_rows
   }
 }

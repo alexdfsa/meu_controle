@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meu_controle/modules/app/utils/app.dart';
-import 'package:meu_controle/modules/app/utils/string_utils.dart';
 
 abstract class GenericEntity extends Equatable {
-  final String uuid;
+  String uuid;
   final String tenant;
   final Timestamp created;
   final String createdBy;
@@ -23,7 +22,7 @@ abstract class GenericEntity extends Equatable {
   });
 
   GenericEntity.n()
-      : uuid = StringUtils.generateUUID(),
+      : uuid = '',
         tenant = App.currentTenant(),
         createdBy = App.currentUser(),
         created = Timestamp.fromDate(DateTime.now()),
