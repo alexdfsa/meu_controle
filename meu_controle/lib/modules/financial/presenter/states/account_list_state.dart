@@ -1,14 +1,17 @@
 import 'package:meu_controle/modules/financial/domain/entities/account.dart';
 
+typedef Model = Account;
+typedef ModelList = List<Account>;
+
 class AccountListState {
-  final List<Account> models;
+  final ModelList models;
 
   AccountListState({required this.models});
 
   AccountListState.initial() : models = [];
 
   AccountListState copyWith({
-    required List<Account> models,
+    required ModelList models,
   }) {
     return AccountListState(
       models: models,

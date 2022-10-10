@@ -5,10 +5,13 @@ import 'package:meu_controle/modules/financial/domain/entities/account.dart';
 import 'package:meu_controle/modules/financial/domain/usecases/account_uc.dart';
 import 'package:meu_controle/modules/financial/presenter/states/account_state.dart';
 
-class AccountStore extends StreamStore<Failure, AccountState> {
+typedef Model = Account;
+typedef ModelState = AccountState;
+
+class AccountStore extends StreamStore<Failure, ModelState> {
   final AccountUC _uc;
 
-  AccountStore(this._uc) : super(AccountState.initial());
+  AccountStore(this._uc) : super(ModelState.initial());
 
   //Form fields
   final formKey = GlobalKey<FormState>();
@@ -24,11 +27,11 @@ class AccountStore extends StreamStore<Failure, AccountState> {
     return null;
   }
 
-  updateControllers(Account model) {
+  updateControllers(Model model) {
     nameInputController.text = model.name;
   }
 
-  fetchModel(Account model) {
+  fetchModel(Model model) {
     try {
       update(state.copyWith(model: model), force: true);
       updateControllers(state.model);
@@ -39,7 +42,7 @@ class AccountStore extends StreamStore<Failure, AccountState> {
     }
   }
 
-  updatedModel(Account model) {
+  updatedModel(Model model) {
     model.name = nameInputController.text;
     return model;
   }
@@ -47,7 +50,7 @@ class AccountStore extends StreamStore<Failure, AccountState> {
   saveOrUpdate() async {
     try {
       setLoading(true);
-      Account model = updatedModel(state.model);
+      Model model = updatedModel(state.model);
       await _uc.saveOrUpdate(model);
       update(state.copyWith(model: model), force: true);
     } on Failure catch (ex) {
@@ -57,7 +60,7 @@ class AccountStore extends StreamStore<Failure, AccountState> {
     }
   }
 
-  Future<void> delete(BuildContext context, Account model) async {
+  Future<void> delete(BuildContext context, Model model) async {
     try {
       setLoading(true);
       _uc.delete(model.uuid);
