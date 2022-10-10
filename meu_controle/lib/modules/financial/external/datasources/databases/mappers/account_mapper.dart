@@ -33,6 +33,7 @@ mixin AccountMapper implements Mapper<Account> {
         isActive: map['isActive'],
         name: map['name'],
         bank: map['bank'],
+        code: map['code'],
       );
       return model;
     } catch (e, stacktrace) {

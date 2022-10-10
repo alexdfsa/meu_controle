@@ -45,9 +45,9 @@ class _AccountListPageState extends State<AccountListPage>
       body: scopedBuilder(),
       floatingActionButton: CustomFloatActionButton(
           icon: const Icon(Icons.add),
-          tooTip: 'Criar novo banco',
+          tooTip: 'Criar nova conta',
           onPressed: () {
-            Modular.to.pushNamed(Menu.financialBank,
+            Modular.to.pushNamed(Menu.financialAccount,
                 arguments: PageArguments(Account.n()));
           }),
       bottomNavigationBar: const CustomBottomNavigationBar(),
@@ -93,7 +93,7 @@ class _AccountListPageState extends State<AccountListPage>
               return Card(
                 child: ListTile(
                   title: Text(state.models[index].name),
-                  onTap: () => Modular.to.pushNamed(Menu.financialBank,
+                  onTap: () => Modular.to.pushNamed(Menu.financialAccount,
                       arguments: PageArguments(state.models[index])),
                   contentPadding: const EdgeInsets.all(8),
                   subtitle: Text(state.models[index].name),

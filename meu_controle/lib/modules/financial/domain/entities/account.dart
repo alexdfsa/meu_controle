@@ -13,12 +13,14 @@ class Account extends GenericEntity {
       required super.updatedBy,
       required super.isActive,
       required this.bank,
+      required this.code,
       required this.name,
       this.inicialBanalce = 0,
       this.accountType = AccountType.carteira,
       this.comments = '',
       this.color = const Color.fromARGB(255, 66, 165, 245)});
   String bank;
+  String code;
   String name;
   double inicialBanalce;
   AccountType accountType;
@@ -27,6 +29,7 @@ class Account extends GenericEntity {
 
   Account.n(
       {this.bank = '',
+      this.code = '',
       this.name = '',
       this.inicialBanalce = 0,
       this.accountType = AccountType.carteira,
@@ -36,5 +39,5 @@ class Account extends GenericEntity {
 
   @override
   List<Object?> get props =>
-      [uuid, bank, inicialBanalce, name, accountType, color, comments];
+      [uuid, bank, code, inicialBanalce, name, accountType, color, comments];
 }

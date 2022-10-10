@@ -15,12 +15,13 @@ class AccountHasuraDatasource extends HasuraDatasource<Account>
       List<Account> resultList = [];
       var result = await runQuery(sqlGetAll);
       resultList =
-          (result['data']['bank'] as List).map((e) => fromMap(e)).toList();
+          (result['data']['account'] as List).map((e) => fromMap(e)).toList();
       return resultList;
     } on Failure {
       rethrow;
     } catch (e, stack) {
-      throw UnknownError(e.toString(), stack, 'bank_hasura_datasource-getAll');
+      throw UnknownError(
+          e.toString(), stack, 'account_hasura_datasource-getAll');
     }
   }
 
@@ -32,7 +33,8 @@ class AccountHasuraDatasource extends HasuraDatasource<Account>
     } on Failure {
       rethrow;
     } catch (e, stack) {
-      throw UnknownError(e.toString(), stack, 'bank_hasura_datasource-delete');
+      throw UnknownError(
+          e.toString(), stack, 'account_hasura_datasource-delete');
     }
   }
 
@@ -40,12 +42,12 @@ class AccountHasuraDatasource extends HasuraDatasource<Account>
   Future get(String uuid) async {
     try {
       var result = await runQuery(sqlGetByUUid(uuid));
-      Account model = (result['data']['bank']).map((e) => fromMap(e));
+      Account model = (result['data']['account']).map((e) => fromMap(e));
       return model;
     } on Failure {
       rethrow;
     } catch (e, stack) {
-      throw UnknownError(e.toString(), stack, 'bank_hasura_datasource-getAll');
+      throw UnknownError(e.toString(), stack, 'account_hasura_datasource-get');
     }
   }
 
@@ -74,7 +76,7 @@ class AccountHasuraDatasource extends HasuraDatasource<Account>
 }
 
 String sqlGetByUUid(String uuid) => '''
-query bank {
+query account {
   bank(where: {uuid: {_eq: "$uuid"}}) {
     code
     name
@@ -90,8 +92,8 @@ query bank {
       ''';
 
 String sqlGetAll = '''
-query allBanks {
-  bank(order_by: {code: asc}) {
+query allAccounts {
+  account(order_by: {code: asc}) {
     code
     name
     tenant
