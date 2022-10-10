@@ -1,18 +1,18 @@
 import 'package:meu_controle/modules/app/utils/failure.dart';
-import 'package:meu_controle/modules/financial/domain/entities/bank.dart';
-import 'package:meu_controle/modules/financial/external/datasources/databases/mappers/bank_mapper.dart';
+import 'package:meu_controle/modules/financial/domain/entities/account.dart';
+import 'package:meu_controle/modules/financial/external/datasources/databases/mappers/account_mapper.dart';
 import 'package:meu_controle/modules/financial/external/datasources/databases/hasura/hasura_datasource.dart';
 import 'package:meu_controle/modules/financial/infra/interfaces/datasources/i_datasource.dart';
 
-class BankHasuraDatasource extends HasuraDatasource<Bank>
-    with BankMapper
+class AccountHasuraDatasource extends HasuraDatasource<Account>
+    with AccountMapper
     implements IDatasource {
-  BankHasuraDatasource() : super();
+  AccountHasuraDatasource() : super();
 
   @override
-  Future<List<Bank>> getAll() async {
+  Future<List<Account>> getAll() async {
     try {
-      List<Bank> resultList = [];
+      List<Account> resultList = [];
       var result = await runQuery(sqlGetAll);
       resultList =
           (result['data']['bank'] as List).map((e) => fromMap(e)).toList();
@@ -40,8 +40,8 @@ class BankHasuraDatasource extends HasuraDatasource<Bank>
   Future get(String uuid) async {
     try {
       var result = await runQuery(sqlGetByUUid(uuid));
-      Bank bank = (result['data']['bank']).map((e) => fromMap(e));
-      return bank;
+      Account model = (result['data']['bank']).map((e) => fromMap(e));
+      return model;
     } on Failure {
       rethrow;
     } catch (e, stack) {
@@ -50,15 +50,15 @@ class BankHasuraDatasource extends HasuraDatasource<Bank>
   }
 
   @override
-  Future saveOrUpdate(model) async {
-    Bank bank = model;
-    String sql = bank.uuid.isEmpty ? insertSQL(bank) : updateSQL(bank);
+  Future saveOrUpdate(pModel) async {
+    Account model = pModel;
+    String sql = model.uuid.isEmpty ? insertSQL(model) : updateSQL(model);
     try {
       var result = await runMutation(sql);
-      if (bank.uuid.isEmpty) {
-        bank.uuid = result["data"]["insert_bank"]["returning"][0]["uuid"];
+      if (model.uuid.isEmpty) {
+        model.uuid = result["data"]["insert_bank"]["returning"][0]["uuid"];
       }
-      return bank;
+      return model;
     } on Failure {
       rethrow;
     } catch (e, stack) {
@@ -113,9 +113,9 @@ mutation delete {
 }
       ''';
 
-String insertSQL(Bank model) => '''
+String insertSQL(Account model) => '''
 mutation InsertBank {
-  insert_bank(objects: {code: "${model.code}", created: "${model.created.toDate()}", createdBy: "${model.createdBy}", isActive: "${model.isActive}", name: "${model.name}", tenant: "${model.tenant}", updated: "${model.updated.toDate()}", updatedBy: "${model.updatedBy}"}) {
+  insert_bank(objects: {code: "${model.uuid}", created: "${model.created.toDate()}", createdBy: "${model.createdBy}", isActive: "${model.isActive}", name: "${model.name}", tenant: "${model.tenant}", updated: "${model.updated.toDate()}", updatedBy: "${model.updatedBy}"}) {
     returning {
       uuid
     }
@@ -124,9 +124,9 @@ mutation InsertBank {
 }
 ''';
 
-String updateSQL(Bank model) => '''
+String updateSQL(Account model) => '''
 mutation updateBank {
-  update_bank(where: {uuid: {_eq: "${model.uuid}"}}, _set: {code: "${model.code}", isActive: ${model.isActive}, name: "${model.name}", updated: "${DateTime.now()}", updatedBy: "${model.updatedBy}"}) {
+  update_bank(where: {uuid: {_eq: "${model.uuid}"}}, _set: {code: "${model.uuid}", isActive: ${model.isActive}, name: "${model.name}", updated: "${DateTime.now()}", updatedBy: "${model.updatedBy}"}) {
     affected_rows
   }
 }

@@ -1,3 +1,3 @@
 import 'package:meu_controle/modules/core/infra/interfaces/datasources/generic_datasource.dart';
 
-abstract class IBankDatasource implements GenericDatasource {}
+abstract class IDatasource implements GenericDatasource {}

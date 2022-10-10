@@ -42,12 +42,13 @@ class _BankPageState extends State<BankPage> {
         ),
         actions: [
           PopupMenuButton<int>(
-              onSelected: (item) => handleClick(item),
-              itemBuilder: (context) => [
-                    const PopupMenuItem<int>(value: 0, child: Text('Arquivar')),
-                    const PopupMenuItem<int>(value: 1, child: Text('Excluir')),
-                    const PopupMenuItem<int>(value: 2, child: Text('Ajuda')),
-                  ])
+            onSelected: (item) => handleClick(item),
+            itemBuilder: (context) => [
+              const PopupMenuItem<int>(value: 0, child: Text('Arquivar')),
+              const PopupMenuItem<int>(value: 1, child: Text('Excluir')),
+              const PopupMenuItem<int>(value: 2, child: Text('Ajuda')),
+            ],
+          ),
         ],
       ),
       body: page(), //scopedBuildPage(),

@@ -25,7 +25,10 @@ class CustomSnackbar {
         message: message,
         contentType: type,
       ),
-      action: snackBarAction(),
+      action: SnackBarAction(
+        label: 'Undo',
+        onPressed: snackBarAction,
+      ),
     );
     //ScaffoldMessenger.of(context).hideCurrentSnackBar();
     GlobalScaffold.instance.showSnackbar(snackBar);

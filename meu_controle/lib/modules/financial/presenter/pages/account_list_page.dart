@@ -7,21 +7,21 @@ import 'package:meu_controle/modules/app/utils/menu.dart';
 import 'package:meu_controle/modules/core/presenter/widgets/custom_bottom_navigation_bar.dart';
 import 'package:meu_controle/modules/core/presenter/widgets/custom_float_action_button.dart';
 import 'package:meu_controle/modules/core/presenter/widgets/custom_snackbar.dart';
-import 'package:meu_controle/modules/financial/domain/entities/bank.dart';
-import 'package:meu_controle/modules/financial/presenter/pages/bank_page.dart';
-import 'package:meu_controle/modules/financial/presenter/states/bank_list_state.dart';
-import 'package:meu_controle/modules/financial/presenter/store/bank_list_store.dart';
+import 'package:meu_controle/modules/financial/domain/entities/account.dart';
+import 'package:meu_controle/modules/financial/presenter/pages/account_page.dart';
+import 'package:meu_controle/modules/financial/presenter/states/account_list_state.dart';
+import 'package:meu_controle/modules/financial/presenter/store/account_list_store.dart';
 
-class BankListPage extends StatefulWidget {
-  const BankListPage({Key? key}) : super(key: key);
+class AccountListPage extends StatefulWidget {
+  const AccountListPage({Key? key}) : super(key: key);
 
   @override
-  State<BankListPage> createState() => _BankListPageState();
+  State<AccountListPage> createState() => _AccountListPageState();
 }
 
-class _BankListPageState extends State<BankListPage>
+class _AccountListPageState extends State<AccountListPage>
     with TickerProviderStateMixin {
-  final BankListStore store = Modular.get();
+  final AccountListStore store = Modular.get();
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _BankListPageState extends State<BankListPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bank'),
+        title: const Text('Account'),
         actions: [
           IconButton(
               onPressed: () {
@@ -48,7 +48,7 @@ class _BankListPageState extends State<BankListPage>
           tooTip: 'Criar novo banco',
           onPressed: () {
             Modular.to.pushNamed(Menu.financialBank,
-                arguments: BankPageArguments(Bank.n()));
+                arguments: PageArguments(Account.n()));
           }),
       bottomNavigationBar: const CustomBottomNavigationBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -56,7 +56,8 @@ class _BankListPageState extends State<BankListPage>
   }
 
   scopedBuilder() {
-    return ScopedBuilder<BankListStore, Failure, BankListState>.transition(
+    return ScopedBuilder<AccountListStore, Failure,
+        AccountListState>.transition(
       store: store,
       /*
       transition: (_, child) {
@@ -83,19 +84,19 @@ class _BankListPageState extends State<BankListPage>
           child: CircularProgressIndicator(),
         );
       },
-      onState: (context, BankListState state) {
+      onState: (context, AccountListState state) {
         return SafeArea(
           child: ListView.builder(
             shrinkWrap: true,
-            itemCount: state.banks.length,
+            itemCount: state.models.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: ListTile(
-                  title: Text(state.banks[index].name),
+                  title: Text(state.models[index].name),
                   onTap: () => Modular.to.pushNamed(Menu.financialBank,
-                      arguments: BankPageArguments(state.banks[index])),
+                      arguments: PageArguments(state.models[index])),
                   contentPadding: const EdgeInsets.all(8),
-                  subtitle: Text(state.banks[index].code),
+                  subtitle: Text(state.models[index].name),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -107,7 +108,7 @@ class _BankListPageState extends State<BankListPage>
                         icon: const Icon(Icons.delete),
                         onPressed: () async {
                           bool deleted =
-                              await store.delete(context, state.banks[index]);
+                              await store.delete(context, state.models[index]);
                           if (deleted) {
                             CustomSnackbar(store.unDelete,
                                     context: context,
