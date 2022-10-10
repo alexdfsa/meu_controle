@@ -38,7 +38,7 @@ mixin BankMapper implements Mapper<Bank> {
     } catch (e, stacktrace) {
       debugPrint(e.toString());
       throw DatasourceException(
-          stacktrace, 'bank_mapper-fromMap', e, e.toString());
+          stacktrace, 'bank_mapper-fromMap', e.toString(), e.toString());
     }
   }
 }

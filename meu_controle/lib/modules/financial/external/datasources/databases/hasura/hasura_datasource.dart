@@ -13,37 +13,23 @@ abstract class HasuraDatasource<T extends GenericEntity> extends Mapper<T> {
   };
 
   Future runQuery(String sql, {Map<String, dynamic>? variables}) async {
-    List<T> resultList = [];
     try {
       var result = await hasuraConnect.query(sql,
           headers: headers, variables: variables);
       return result;
-    } on Exception catch (ex, stack) {
-      debugPrint(ex.toString());
-      Future.error(DatasourceException(
-          stack, 'hasura_datasource-queryGetAll', ex, ex.toString()));
     } catch (e, stack) {
-      UnknownError(e, stack, 'hasura_datasource-queryGetAll');
+      throw UnknownError(e.toString(), stack, 'hasura_datasource-runQuery');
     }
-    return resultList;
   }
 
   Future runMutation(String sql, {Map<String, dynamic>? variables}) async {
-    int affectedRows = 0;
-    debugPrint(sql);
     try {
       var result = await hasuraConnect.mutation(sql,
           headers: headers, variables: variables);
       return result;
-    } on Exception catch (ex, stack) {
-      debugPrint('runMutation-------: $ex');
-      affectedRows = -1;
-      throw DatasourceException(
-          stack, 'hasura_datasource-runMutation', ex, ex.toString());
     } catch (e, stack) {
-      UnknownError(e, stack, 'hasura_datasource-runMutation');
+      throw UnknownError(e.toString(), stack, 'hasura_datasource-runMutation');
     }
-    return affectedRows;
   }
 
   subscription(String sql, {Map<String, dynamic>? variables}) async {

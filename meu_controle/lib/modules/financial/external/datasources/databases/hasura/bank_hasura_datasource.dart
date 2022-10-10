@@ -12,19 +12,17 @@ class BankHasuraDatasource extends HasuraDatasource<Bank>
 
   @override
   Future<List<Bank>> getAll() async {
-    List<Bank> resultList = [];
     try {
+      List<Bank> resultList = [];
       var result = await runQuery(sqlGetAll);
       resultList =
           (result['data']['bank'] as List).map((e) => fromMap(e)).toList();
-    } on Exception catch (ex, stack) {
-      debugPrint(ex.toString());
-      Future.error(DatasourceException(
-          stack, 'bank_hasura_datasource-getAll', ex, ex.toString()));
+      return resultList;
+    } on Failure {
+      rethrow;
     } catch (e, stack) {
-      UnknownError(e, stack, 'hasura_datasource-getAll');
+      throw UnknownError(e.toString(), stack, 'bank_hasura_datasource-getAll');
     }
-    return resultList;
   }
 
   @override
@@ -36,24 +34,25 @@ class BankHasuraDatasource extends HasuraDatasource<Bank>
       return true;
     } on Exception catch (ex, stack) {
       debugPrint('delete--------:$ex');
-      Future.error(DatasourceException(
-          stack, 'bank_hasura_datasource-delete', ex, ex.toString()));
-    } catch (e, stack) {
-      Future.error(UnknownError(e, stack, 'bank_hasura_datasource-delete'));
+      Future.error(DatasourceException(stack, 'bank_hasura_datasource-delete',
+          ex.toString(), ex.toString()));
+      //} catch (e, stack) {
+      //  Future.error(UnknownError(e, stack, 'bank_hasura_datasource-delete'));
     }
     return deleted;
   }
 
   @override
-  Future get(String uuid) {
-    // TODO: implement get
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Stream<List>> getStreamList() {
-    // TODO: implement getStreamList
-    throw UnimplementedError();
+  Future get(String uuid) async {
+    try {
+      var result = await runQuery(sqlGetByUUid(uuid));
+      Bank bank = (result['data']['bank']).map((e) => fromMap(e));
+      return bank;
+    } on Failure {
+      rethrow;
+    } catch (e, stack) {
+      throw UnknownError(e.toString(), stack, 'bank_hasura_datasource-getAll');
+    }
   }
 
   @override
@@ -73,14 +72,36 @@ class BankHasuraDatasource extends HasuraDatasource<Bank>
       return bank;
     } on Exception catch (ex, stack) {
       debugPrint(ex.toString());
-      Future.error(DatasourceException(
-          stack, 'bank_hasura_datasource-getAll', ex, ex.toString()));
-    } catch (e, stack) {
-      UnknownError(e, stack, 'hasura_datasource-getAll');
+      Future.error(DatasourceException(stack, 'bank_hasura_datasource-getAll',
+          ex.toString(), ex.toString()));
+      //} catch (e, stack) {
+      //  UnknownError(e, stack, 'hasura_datasource-getAll');
     }
     return saved;
   }
+
+  @override
+  Future<Stream<List>> getStreamList() {
+    // TODO: implement getStreamList
+    throw UnimplementedError();
+  }
 }
+
+String sqlGetByUUid(String uuid) => '''
+query bank {
+  bank(where: {uuid: {_eq: "$uuid"}}) {
+    code
+    name
+    tenant
+    updated
+    updatedBy
+    uuid
+    created
+    createdBy
+    isActive
+  }
+}
+      ''';
 
 String sqlGetAll = '''
 query allBanks {

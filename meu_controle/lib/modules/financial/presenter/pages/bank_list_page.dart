@@ -83,9 +83,9 @@ class _BankListPageState extends State<BankListPage>
         );
       },
       onError: (context, error) {
-        debugPrint(error!.errorMessage);
+        //debugPrint(error!.errorMessage);
         return Center(
-          child: Text(error.errorMessage),
+          child: Text(error!.errorMessage),
         );
       },
       onLoading: (context) {

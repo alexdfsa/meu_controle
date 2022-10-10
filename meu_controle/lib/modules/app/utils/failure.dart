@@ -29,11 +29,18 @@ abstract class Failure implements Exception {
   Failure(
       {StackTrace? stackTrace,
       String? label,
-      dynamic exception,
+      String? exception,
       required this.errorMessage,
-      required this.exceptionType}) {
-    if (stackTrace != null) {
-      debugPrintStack(label: label, stackTrace: stackTrace);
+      required this.exceptionType,
+      bool print = false}) {
+    if (exception != null) {
+      String error = '===== um error ocorreu ===== \n'
+          'Tipo: $exceptionType. \n'
+          'Error: $errorMessage. \n'
+          'Label: $label. \n'
+          'exception: $exception \n'
+          '==========';
+      debugPrint(error);
     }
     //TODO: Implementar crashanalitics
     //ErrorReport.
@@ -41,7 +48,7 @@ abstract class Failure implements Exception {
 }
 
 class UnknownError extends Failure {
-  final dynamic exception;
+  final String? exception;
   final StackTrace? stackTrace;
   final String? label;
 
@@ -74,7 +81,7 @@ _report(){}
 */
 
 class EntityException extends Failure {
-  EntityException(StackTrace stackTrace, String label, dynamic exception,
+  EntityException(StackTrace stackTrace, String label, String? exception,
       String errorMessage)
       : super(
             stackTrace: stackTrace,
@@ -85,7 +92,7 @@ class EntityException extends Failure {
 }
 
 class UseCaseException extends Failure {
-  UseCaseException(StackTrace stackTrace, String label, dynamic exception,
+  UseCaseException(StackTrace stackTrace, String label, String? exception,
       String errorMessage)
       : super(
             stackTrace: stackTrace,
@@ -96,7 +103,7 @@ class UseCaseException extends Failure {
 }
 
 class RepositoryException extends Failure {
-  RepositoryException(StackTrace stackTrace, String label, dynamic exception,
+  RepositoryException(StackTrace stackTrace, String label, String? exception,
       String errorMessage)
       : super(
             stackTrace: stackTrace,
@@ -107,7 +114,7 @@ class RepositoryException extends Failure {
 }
 
 class DatasourceException extends Failure {
-  DatasourceException(StackTrace? stackTrace, String? label, dynamic exception,
+  DatasourceException(StackTrace? stackTrace, String? label, String? exception,
       String errorMessage)
       : super(
             stackTrace: stackTrace,
@@ -118,7 +125,7 @@ class DatasourceException extends Failure {
 }
 
 class DriverException extends Failure {
-  DriverException(StackTrace? stackTrace, String? label, dynamic exception,
+  DriverException(StackTrace? stackTrace, String? label, String? exception,
       String errorMessage)
       : super(
             stackTrace: stackTrace,
@@ -129,7 +136,7 @@ class DriverException extends Failure {
 }
 
 class PageException extends Failure {
-  PageException(StackTrace stackTrace, String label, dynamic exception,
+  PageException(StackTrace stackTrace, String label, String? exception,
       String errorMessage)
       : super(
             stackTrace: stackTrace,
@@ -140,7 +147,7 @@ class PageException extends Failure {
 }
 
 class StateException extends Failure {
-  StateException(StackTrace stackTrace, String label, dynamic exception,
+  StateException(StackTrace stackTrace, String label, String? exception,
       String errorMessage)
       : super(
             stackTrace: stackTrace,
@@ -151,7 +158,7 @@ class StateException extends Failure {
 }
 
 class StoreException extends Failure {
-  StoreException(StackTrace stackTrace, String label, dynamic exception,
+  StoreException(StackTrace stackTrace, String label, String? exception,
       String errorMessage)
       : super(
             stackTrace: stackTrace,
@@ -162,7 +169,7 @@ class StoreException extends Failure {
 }
 
 class WidgetException extends Failure {
-  WidgetException(StackTrace stackTrace, String label, dynamic exception,
+  WidgetException(StackTrace stackTrace, String label, String? exception,
       String errorMessage)
       : super(
             stackTrace: stackTrace,

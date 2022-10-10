@@ -34,7 +34,7 @@ class BankListStore extends StreamStore<Failure, BankListState> {
       update(state.copyWith(banks: modelList), force: true);
       return deleted;
     } on Exception catch (ex, trace) {
-      setError(StoreException(trace, 'label', ex, ex.toString()));
+      setError(StoreException(trace, 'label', ex.toString(), ex.toString()));
       return false;
     } finally {
       setLoading(false);

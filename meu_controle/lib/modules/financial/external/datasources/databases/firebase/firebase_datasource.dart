@@ -32,9 +32,9 @@ abstract class FirebaseDatasource<T extends GenericEntity> extends Mapper<T> {
       resultList = result.docs.map((e) => fromMap(e.data() as Map)).toList();
     } on Exception catch (ex, stack) {
       DatasourceException(
-          stack, 'firebase_datasource-getAll', ex, ex.toString());
-    } catch (e, stack) {
-      UnknownError(e, stack, 'firebase_datasource-getAll');
+          stack, 'firebase_datasource-getAll', ex.toString(), ex.toString());
+      //} catch (e, stack) {
+      //  UnknownError(e, stack, 'firebase_datasource-getAll');
     }
     return resultList;
   }
