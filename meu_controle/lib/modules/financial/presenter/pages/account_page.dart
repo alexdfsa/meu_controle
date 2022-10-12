@@ -65,13 +65,47 @@ class _AccountPageState extends State<AccountPage> {
         child: Column(
           children: [
             CustomTextFormField(
-              label: 'Code',
+              label: 'Bank',
               controller: store.codeInputController,
               validatorType: ValidatorType.mandatoryField,
               textInputType: TextInputType.number,
             ),
+            Row(
+              children: [
+                CustomTextFormField(
+                  label: 'Code',
+                  controller: store.codeInputController,
+                  validatorType: ValidatorType.mandatoryField,
+                  textInputType: TextInputType.number,
+                ),
+                CustomTextFormField(
+                  label: 'Color',
+                  controller: store.codeInputController,
+                  validatorType: ValidatorType.mandatoryField,
+                  textInputType: TextInputType.number,
+                ),
+              ],
+            ),
             CustomTextFormField(
               label: 'Name',
+              controller: store.nameInputController,
+              validatorType: ValidatorType.mandatoryField,
+              textInputType: TextInputType.text,
+            ),
+            CustomTextFormField(
+              label: 'Inicial Balance',
+              controller: store.nameInputController,
+              validatorType: ValidatorType.mandatoryField,
+              textInputType: TextInputType.text,
+            ),
+            CustomTextFormField(
+              label: 'Account Type',
+              controller: store.nameInputController,
+              validatorType: ValidatorType.mandatoryField,
+              textInputType: TextInputType.text,
+            ),
+            CustomTextFormField(
+              label: 'Comments',
               controller: store.nameInputController,
               validatorType: ValidatorType.mandatoryField,
               textInputType: TextInputType.text,

@@ -96,7 +96,7 @@ class _AccountListPageState extends State<AccountListPage>
                   onTap: () => Modular.to.pushNamed(Menu.financialAccount,
                       arguments: PageArguments(state.models[index])),
                   contentPadding: const EdgeInsets.all(8),
-                  subtitle: Text(state.models[index].name),
+                  subtitle: Text(state.models[index].code),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
