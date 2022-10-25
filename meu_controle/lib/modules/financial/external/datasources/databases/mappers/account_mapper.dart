@@ -20,7 +20,7 @@ mixin AccountMapper implements Mapper<Account> {
         'name': model.name,
         'code': model.code,
         'inicialBanalce': model.inicialBanalce,
-        'accountType': model.accountType,
+        'accountType': model.accountType.name,
         'comments': model.comments,
         'color': model.color
       };
@@ -47,9 +47,10 @@ mixin AccountMapper implements Mapper<Account> {
         name: map['name'],
         code: map['code'],
         inicialBanalce: map['inicialBanalce'],
-        accountType: map['accountType'],
+        accountType: AccountType.values.byName(map['accountType']),
         comments: map['comments'],
-        color: map['color'],
+        color: Color(
+            int.parse(map['color'].split('(0x')[1].split(')')[0], radix: 16)),
       );
       return model;
     } catch (e, stacktrace) {

@@ -46,6 +46,8 @@ dependencies:
   uuid: ^3.0.6
   awesome_snackbar_content: ^0.0.8
   hasura_connect: ^4.0.0+4
+  flutter_material_color_picker: ^1.1.0+2
+  dropdown_search: ^5.0.3
 
 dev_dependencies:
   flutter_test:

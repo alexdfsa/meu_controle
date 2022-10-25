@@ -1,8 +1,12 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:meu_controle/modules/app/utils/failure.dart';
 import 'package:meu_controle/modules/financial/domain/entities/account.dart';
+import 'package:meu_controle/modules/financial/domain/entities/bank.dart';
 import 'package:meu_controle/modules/financial/domain/usecases/account_uc.dart';
+import 'package:meu_controle/modules/financial/domain/usecases/bank_uc.dart';
 import 'package:meu_controle/modules/financial/presenter/states/account_state.dart';
 
 typedef Model = Account;
@@ -10,6 +14,7 @@ typedef ModelState = AccountState;
 
 class AccountStore extends StreamStore<Failure, ModelState> {
   final AccountUC _uc;
+  final BankUC _bankUC = BankUC();
 
   AccountStore(this._uc) : super(ModelState.initial());
 
@@ -18,6 +23,13 @@ class AccountStore extends StreamStore<Failure, ModelState> {
 
   final codeInputController = TextEditingController();
   final nameInputController = TextEditingController();
+  final inicialBalanceInputController = TextEditingController();
+  final commentsInputController = TextEditingController();
+  late Color accountColor;
+  late Color selectedColor; // const Color.fromARGB(255, 66, 165, 245);
+  List<Bank> bankList = [];
+  Bank? selectedBank;
+  late String selectedType;
 
   String? validateField(String? value) {
     debugPrint('validateField');
@@ -29,6 +41,15 @@ class AccountStore extends StreamStore<Failure, ModelState> {
 
   updateControllers(Model model) {
     nameInputController.text = model.name;
+    commentsInputController.text = model.comments;
+    codeInputController.text = model.code;
+    inicialBalanceInputController.text = model.inicialBanalce.toString();
+    selectedBank = bankList.isEmpty
+        ? null
+        : bankList.firstWhere((element) => element.uuid == model.uuid);
+    accountColor = model.color;
+    selectedColor = accountColor;
+    selectedType = model.accountType.name;
   }
 
   fetchModel(Model model) {
@@ -42,8 +63,22 @@ class AccountStore extends StreamStore<Failure, ModelState> {
     }
   }
 
+  fetchBankList() async {
+    try {
+      bankList = await _bankUC.getAll() as List<Bank>;
+    } on Failure catch (ex) {
+      setError(ex);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   updatedModel(Model model) {
+    model.bank = selectedBank!.uuid;
     model.name = nameInputController.text;
+    model.code = codeInputController.text;
+    model.inicialBanalce = double.parse(inicialBalanceInputController.text);
+    model.comments = commentsInputController.text;
     return model;
   }
 

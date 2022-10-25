@@ -77,7 +77,7 @@ class AccountHasuraDatasource extends HasuraDatasource<Account>
 
 String sqlGetByUUid(String uuid) => '''
 query account {
-  bank(where: {uuid: {_eq: "$uuid"}}) {
+  account(where: {uuid: {_eq: "$uuid"}}) {
     code
     name
     tenant
@@ -94,8 +94,13 @@ query account {
 String sqlGetAll = '''
 query allAccounts {
   account(order_by: {code: asc}) {
+    bank
     code
     name
+    inicialBanalce
+    accountType
+    comments
+    color
     tenant
     updated
     updatedBy
@@ -116,8 +121,8 @@ mutation delete {
       ''';
 
 String insertSQL(Account model) => '''
-mutation InsertBank {
-  insert_bank(objects: {code: "${model.uuid}", created: "${model.created.toDate()}", createdBy: "${model.createdBy}", isActive: "${model.isActive}", name: "${model.name}", tenant: "${model.tenant}", updated: "${model.updated.toDate()}", updatedBy: "${model.updatedBy}"}) {
+mutation InsertAccount {
+  insert_account(objects: {bank: "${model.bank}", code: "${model.uuid}", color: "${model.color}", accountType: "${model.accountType}", comments: "${model.comments}", inicialBanalce: "${model.inicialBanalce}", created: "${model.created.toDate()}", createdBy: "${model.createdBy}", isActive: "${model.isActive}", name: "${model.name}", tenant: "${model.tenant}", updated: "${model.updated.toDate()}", updatedBy: "${model.updatedBy}"}) {
     returning {
       uuid
     }
